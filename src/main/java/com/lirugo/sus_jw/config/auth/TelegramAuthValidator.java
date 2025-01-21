@@ -52,7 +52,10 @@ public class TelegramAuthValidator {
         }
 
         // Compare the calculated hash with the provided hash
-        return !calculatedHash.equals(Strings.EMPTY) && calculatedHash.equals(hash);
+        var isEqualHashes = !calculatedHash.equals(Strings.EMPTY) && calculatedHash.equals(hash);
+        log.info("Telegram user data hash is equal: {}", isEqualHashes);
+
+        return isEqualHashes;
     }
 
     private Map<String, String> parseUrlParams(String telegramInitData) {

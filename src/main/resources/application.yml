@@ -2,10 +2,7 @@ app:
   version: "project_version"
   auth:
     tg-bot-token: ${TG_BOT_TOKEN:}
-    token: token-12345
-    user-white-list:
-      - userA
-      - userB
+    username-white-list: ANY,lirugo
 
 server:
   servlet:
@@ -20,7 +17,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/sus_jw_db
     username: sus_jw_user
-    password: ${DB_PASSWORD}
+    password: 9m4tRc91i1TvMa4H
     driver-class-name: org.postgresql.Driver
   flyway:
     enabled: true
@@ -29,7 +26,7 @@ spring:
     baselineOnMigrate: true
     url: jdbc:postgresql://sus_jw_db:5432/sus_jw_db
     user: sus_jw_user
-    password: ${DB_PASSWORD}
+    password: 9m4tRc91i1TvMa4H
     locations: classpath:db/migration
   jpa:
     hibernate:

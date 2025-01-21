@@ -8,10 +8,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class TelegramAuthFilter extends OncePerRequestFilter {
@@ -27,22 +29,16 @@ public class TelegramAuthFilter extends OncePerRequestFilter {
 
         if (authHeader != null) {
             var data = Utils.parseAuthHeader(authHeader);
+            var userJson = data.get("user");
+            var userDto = userService.decodeTgUser(userJson);
 
-            if (telegramAuthValidator.verifyInitData(authHeader)) {
-                // Create an authenticated token
-                var userJson = data.get("user");
-                var userDto = userService.update(userJson);
+            if (telegramAuthValidator.verifyInitData(authHeader) && userService.isInWhiteList(userDto.getUsername())) {
                 var authentication = new TelegramAuthenticationToken(userDto.getUsername(), true);
-//                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                userService.save(userDto);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-            } else {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                return;
             }
         }
 
         filterChain.doFilter(request, response);
     }
-
-
 }
