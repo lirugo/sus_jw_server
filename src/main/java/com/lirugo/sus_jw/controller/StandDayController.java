@@ -1,6 +1,6 @@
 package com.lirugo.sus_jw.controller;
 
-import com.lirugo.sus_jw.entity.StandDay;
+import com.lirugo.sus_jw.dto.StandDayDto;
 import com.lirugo.sus_jw.service.StandDayService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ public class StandDayController {
     private final StandDayService standDayService;
 
     @GetMapping
-    public List<StandDay> getStands() {
+    public List<StandDayDto> getStands() {
         return standDayService.getStandDays();
     }
 }

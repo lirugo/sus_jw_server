@@ -1,5 +1,11 @@
 app:
-  version: "${project.version}"
+  version: "project_version"
+  auth:
+    tg-bot-token: ${TG_BOT_TOKEN:}
+    token: token-12345
+    user-white-list:
+      - userA
+      - userB
 
 server:
   servlet:
@@ -14,8 +20,17 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/sus_jw_db
     username: sus_jw_user
-    password: 9m4tRc91i1TvMa4H
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
+  flyway:
+    enabled: true
+    defaultSchema: public
+    validateOnMigrate: false
+    baselineOnMigrate: true
+    url: jdbc:postgresql://sus_jw_db:5432/sus_jw_db
+    user: sus_jw_user
+    password: ${DB_PASSWORD}
+    locations: classpath:db/migration
   jpa:
     hibernate:
       ddl-auto: validate
