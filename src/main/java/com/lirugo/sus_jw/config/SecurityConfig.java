@@ -27,7 +27,10 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))  // Enable and configure CORS
-                .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/users/*/avatar").permitAll()
+                        .anyRequest().authenticated()
+                )
                 .addFilterBefore(telegramAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

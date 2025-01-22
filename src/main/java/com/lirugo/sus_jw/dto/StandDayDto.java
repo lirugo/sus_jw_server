@@ -1,7 +1,7 @@
 package com.lirugo.sus_jw.dto;
 
+import com.lirugo.sus_jw.entity.StandDayAttendee;
 import com.lirugo.sus_jw.entity.TimeFrameEntity;
-import com.lirugo.sus_jw.entity.UserEntity;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -16,5 +16,5 @@ public class StandDayDto {
     private StandDto stand;
     private LocalDate date;
     private List<TimeFrameEntity> timeFrames;
-    private List<UserEntity> attendees;
+    private List<StandDayAttendee> attendees;
 }

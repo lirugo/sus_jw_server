@@ -1,5 +1,7 @@
 package com.lirugo.sus_jw.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -13,10 +15,15 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.util.List;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+
+@Getter
+@Setter
 @Entity
+@EqualsAndHashCode
 @Table(name = "stand_days")
 public class StandDayEntity {
 
@@ -39,11 +46,7 @@ public class StandDayEntity {
     )
     private List<TimeFrameEntity> timeFrames;
 
-    @OneToMany
-    @JoinTable(
-            name = "stand_day_attendees",
-            joinColumns = @JoinColumn(name = "stand_day_time_frame_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private List<UserEntity> attendees;
+    @JsonBackReference
+    @OneToMany(mappedBy = "standDay", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<StandDayAttendee> attendees;
 }

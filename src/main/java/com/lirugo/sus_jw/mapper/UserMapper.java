@@ -16,7 +16,6 @@ public interface UserMapper {
     UserDto map(UserEntity source);
 
     @Mapping(source = "id", target = "id")
-    @Mapping(target = "meetingId", ignore = true)
     @Mapping(source = "telegramId", target = "telegramId")
     @Mapping(source = "firstName", target = "firstName")
     @Mapping(source = "lastName", target = "lastName")

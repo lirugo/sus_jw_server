@@ -65,12 +65,12 @@ alter table if exists stand_day_time_frames add constraint fk_stand_day_time_fra
 
 -- Stand day attendees
 create table stand_day_attendees (
+    stand_day_id bigint not null,
     user_id bigint not null,
-    stand_day_time_frame_id bigint not null
-);
+    time_frame_id bigint not null,
 
-alter table if exists stand_day_attendees add constraint fk_stand_day_attendees_user_id
-    foreign key (user_id) references users;
-
-alter table if exists stand_day_attendees add constraint fk_stand_day_attendees_stand_day_time_frame_id
-    foreign key (stand_day_time_frame_id) references stand_days;
+    primary key (stand_day_id, time_frame_id, user_id),
+    foreign key (stand_day_id) references stand_days(id),
+    foreign key (time_frame_id) references time_frames(id),
+    foreign key (user_id) references users(id)
+)

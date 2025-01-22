@@ -6,14 +6,18 @@ import com.lirugo.sus_jw.dto.UserDto;
 import com.lirugo.sus_jw.entity.UserEntity;
 import com.lirugo.sus_jw.mapper.UserMapper;
 import com.lirugo.sus_jw.repo.UserRepo;
-import java.io.IOException;
+import jakarta.persistence.EntityNotFoundException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 @Slf4j
 @Service
@@ -31,6 +35,16 @@ public class UserService {
         log.info("User {} is in white list: {}", username, isInWhiteList);
 
         return isInWhiteList;
+    }
+
+    public UserDto getById(Long id) {
+        return userRepo.findById(id).map(userMapper::map)
+                .orElseThrow(() -> new EntityNotFoundException("User not found for id: " + id));
+    }
+
+    public UserDto getByUsername(String username) {
+        return userRepo.findByUsername(username).map(userMapper::map)
+                .orElseThrow(() -> new EntityNotFoundException("User not found for username: " + username));
     }
 
     public UserDto save(UserDto userDto) {
@@ -57,5 +71,19 @@ public class UserService {
         userDto.setId(null);
 
         return userDto;
+    }
+
+    public byte[] getAvatar(Long id) {
+        var user = getById(id);
+        var restTemplate = new RestTemplate();
+        try {
+            byte[] imageBytes = restTemplate.getForObject(user.getPhotoUrl(), byte[].class);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_TYPE, "image/svg+xml");
+            return imageBytes;
+        } catch (Exception e) {
+            return new byte[]{};
+        }
     }
 }
