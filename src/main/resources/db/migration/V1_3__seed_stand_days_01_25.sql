@@ -21,7 +21,6 @@ INSERT INTO stand_days(id, date, stand_id) VALUES
     (17, '2025-02-01', 7), -- sa mkuw-velmart
     (18, '2025-02-02', 7); -- su mkuw-velmart
 
-
 INSERT INTO stand_day_time_frames(stand_day_id, time_frame_id) VALUES
     -- 2025-01-20 (Metro)
     (1, 9), (1, 10),
