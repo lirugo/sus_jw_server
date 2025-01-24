@@ -30,7 +30,7 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "telegram_id")
+    @Column(name = "telegram_id", nullable = false, unique = true)
     private Long telegramId;
 
     @Column(name = "meeting_id")
@@ -42,7 +42,7 @@ public class UserEntity {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(nullable = false, unique = true)
+    @Column
     private String username;
 
     @Column(name = "photo_url")

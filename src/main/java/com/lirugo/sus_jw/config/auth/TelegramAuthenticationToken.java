@@ -10,7 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 @AllArgsConstructor
 public class TelegramAuthenticationToken implements Authentication {
 
-    private final String username;
+    private final String telegramId;
     private boolean authenticated;
 
     @Override
@@ -30,7 +30,7 @@ public class TelegramAuthenticationToken implements Authentication {
 
     @Override
     public Object getPrincipal() {
-        return username;
+        return telegramId;
     }
 
     @Override
@@ -45,6 +45,6 @@ public class TelegramAuthenticationToken implements Authentication {
 
     @Override
     public String getName() {
-        return username;
+        return telegramId;
     }
 }

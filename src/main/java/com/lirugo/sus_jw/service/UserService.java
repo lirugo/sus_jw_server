@@ -42,13 +42,18 @@ public class UserService {
                 .orElseThrow(() -> new EntityNotFoundException("User not found for id: " + id));
     }
 
+    public UserDto getByTelegramId(long telegramId) {
+        return userRepo.findByTelegramId(telegramId).map(userMapper::map)
+                .orElseThrow(() -> new EntityNotFoundException("User not found for telegramId: " + telegramId));
+    }
+
     public UserDto getByUsername(String username) {
         return userRepo.findByUsername(username).map(userMapper::map)
                 .orElseThrow(() -> new EntityNotFoundException("User not found for username: " + username));
     }
 
     public UserDto save(UserDto userDto) {
-        var userEntity = userRepo.findByUsername(userDto.getUsername()).orElseGet(() -> UserEntity.builder()
+        var userEntity = userRepo.findByTelegramId(userDto.getTelegramId()).orElseGet(() -> UserEntity.builder()
                 .telegramId(userDto.getTelegramId())
                 .username(userDto.getUsername())
                 .firstName(userDto.getFirstName())

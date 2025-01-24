@@ -28,7 +28,7 @@ public class UserController {
         }
 
         var principal = authentication.getPrincipal();
-        return userService.getByUsername(principal.toString());
+        return userService.getByTelegramId(Long.parseLong(principal.toString()));
     }
 
     @GetMapping("/{id}/avatar")

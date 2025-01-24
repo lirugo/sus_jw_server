@@ -38,7 +38,7 @@ public class TelegramAuthFilter extends OncePerRequestFilter {
             var userDto = userService.decodeTgUser(userJson);
 
             if (telegramAuthValidator.verifyInitData(authHeader) && userService.isInWhiteList(userDto.getUsername())) {
-                var authentication = new TelegramAuthenticationToken(userDto.getUsername(), true);
+                var authentication = new TelegramAuthenticationToken(userDto.getTelegramId().toString(), true);
                 userService.save(userDto);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }

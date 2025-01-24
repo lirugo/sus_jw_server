@@ -8,9 +8,10 @@ services:
     image: sus_jw_server
     container_name: sus_jw_server
     ports:
-      - "80:8080"
+      - "8080:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/sus_jw_db
+      APP_AUTH_TG-BOT-TOKEN: ${TG_BOT_TOKEN}
       SPRING_DATASOURCE_USERNAME: sus_jw_user
       SPRING_DATASOURCE_PASSWORD: 9m4tRc91i1TvMa4H
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
@@ -34,8 +35,37 @@ services:
     networks:
       - app_network
 
+  nginx:
+    image: nginx:latest
+    container_name: sus_jw_nginx
+    ports:
+      - "443:443"
+      - "80:80"
+    depends_on:
+      - app
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/html:/var/www/certbot/.well-known/acme-challenge
+      - ./nginx/certs:/etc/letsencrypt/live/jw-helper.com
+    networks:
+      - app_network
+
+#  certbot:
+#    image: certbot/certbot
+#    container_name: sus_jw_certbot
+#    volumes:
+#      - ./nginx/certs:/etc/letsencrypt
+#      - ./nginx/certs-data:/var/lib/letsencrypt
+#      - ./nginx/html:/var/www/certbot
+#    command: certonly --webroot --webroot-path=/var/www/certbot --email roostik21@gmail.com --agree-tos --no-eff-email -d jw-helper.com -d www.jw-helper.com
+#    depends_on:
+#      - nginx
+#    networks:
+#      - app_network
+
 volumes:
   postgres_data:
+  certs_data:
 
 networks:
   app_network:
