@@ -40,3 +40,4 @@ out/
 docker/app.jar
 docker/nginx/certs/**
 docker/nginx/html/**
+.env

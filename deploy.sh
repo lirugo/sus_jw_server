@@ -43,7 +43,7 @@ ssh -i "$SSH_KEY" "$REMOTE_USER@$REMOTE_HOST" "cd $REMOTE_DIR && docker-compose 
 
 # Step 6: Execute docker-compose up --build -d on the remote server
 echo "Building and starting the Docker containers on the remote server..."
-ssh -i "$SSH_KEY" "$REMOTE_USER@$REMOTE_HOST" "cd $REMOTE_DIR && docker-compose up --build -d" || { echo "Failed to execute docker-compose on the remote server! Exiting."; exit 1; }
+ssh -i "$SSH_KEY" "$REMOTE_USER@$REMOTE_HOST" "cd $REMOTE_DIR && docker-compose --env-file /app.env up --build -d" || { echo "Failed to execute docker-compose on the remote server! Exiting."; exit 1; }
 
 # Step 7: Confirm success
 echo "Successfully built and deployed the Docker folder and started the application on $REMOTE_USER@$REMOTE_HOST:$REMOTE_DIR"
