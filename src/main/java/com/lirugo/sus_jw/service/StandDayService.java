@@ -10,6 +10,7 @@ import com.lirugo.sus_jw.repo.TimeFrameRepo;
 import com.lirugo.sus_jw.repo.UserRepo;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class StandDayService {
+    private static final int STAND_RANGE_MNTHS = 1;
     private final UserRepo userRepo;
     private final StandDayAttendeeRepo standDayAttendeeRepo;
     private final StandDayRepo standDayRepo;
@@ -31,7 +33,11 @@ public class StandDayService {
     }
 
     public List<StandDayDto> getStandDays() {
-        return standDayRepo.findAll().stream().map(standDayMapper::map).toList();
+        var currentDate = LocalDate.now();
+        var startDate = currentDate.minusMonths(STAND_RANGE_MNTHS);
+        var endDate = currentDate.plusMonths(STAND_RANGE_MNTHS);
+
+        return standDayRepo.findAllWithinOneMonthRange(startDate, endDate).stream().map(standDayMapper::map).toList();
     }
 
     @Transactional
