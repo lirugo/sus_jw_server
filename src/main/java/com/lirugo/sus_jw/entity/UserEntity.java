@@ -47,4 +47,8 @@ public class UserEntity {
 
     @Column(name = "photo_url")
     private String photoUrl;
+
+    public String getFullName() {
+        return firstName + (lastName != null ? " " + lastName : "");
+    }
 }

@@ -2,7 +2,16 @@ app:
   version: "project_version"
   auth:
     tg-bot-token: ${TG_BOT_TOKEN}
+    tg-bot-username: "jw_helpers_bot"
     username-white-list: ANY # use tg ids for it
+  chat-id: -1001864515510
+  message-template: | 
+    Є потреба на стенд {0} | {1}
+    {2}
+    1. {3}
+    2. {4}
+    3. {5}
+    4. {6}
 
 server:
   servlet:

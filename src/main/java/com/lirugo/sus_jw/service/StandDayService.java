@@ -27,6 +27,7 @@ public class StandDayService {
     private final StandDayRepo standDayRepo;
     private final TimeFrameRepo timeFrameRepo;
     private final StandDayMapper standDayMapper;
+    private final TelegramService telegramService;
 
     public Optional<StandDayDto> getById(long id) {
         return standDayRepo.findById(id).map(standDayMapper::map);
@@ -71,6 +72,9 @@ public class StandDayService {
         var standDay = standDayRepo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("StandDay not found for id: " + id));
 
+        var timeFrame = timeFrameRepo.findById(request.getTimeFrameId())
+                .orElseThrow(() -> new EntityNotFoundException("TimeFrame not found for id: " + request.getTimeFrameId()));
+
         var attendeeToRemove = standDay.getAttendees().stream()
                 .filter(attendee ->
                         attendee.getUser().getId() == request.getAttendeeId() &&
@@ -80,6 +84,7 @@ public class StandDayService {
         if (attendeeToRemove.isPresent()) {
             standDay.getAttendees().remove(attendeeToRemove.get());
             standDayRepo.save(standDay);
+            telegramService.sendStandNeedNotification(standDay, timeFrame);
             log.info("Successfully unassigned attendee with id {} from StandDay with id {}", request.getAttendeeId(), id);
         } else {
             log.warn("Attendee {} not assigned to StandDay with id: {}", request.getAttendeeId(), id);

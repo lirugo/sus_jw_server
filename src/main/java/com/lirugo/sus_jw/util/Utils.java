@@ -1,5 +1,6 @@
 package com.lirugo.sus_jw.util;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -15,4 +16,6 @@ public class Utils {
                 .filter(parts -> parts.length == 2)
                 .collect(Collectors.toMap(parts -> parts[0], parts -> parts[1]));
     }
+
+    public static DateTimeFormatter DAY_MONTH_FORMATTER = DateTimeFormatter.ofPattern("dd.MM");
 }

@@ -17,6 +17,7 @@ public interface UserMapper {
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "telegramId", target = "telegramId")
+    @Mapping(target = "meetingId", ignore = true)
     @Mapping(source = "firstName", target = "firstName")
     @Mapping(source = "lastName", target = "lastName")
     @Mapping(source = "username", target = "username")
