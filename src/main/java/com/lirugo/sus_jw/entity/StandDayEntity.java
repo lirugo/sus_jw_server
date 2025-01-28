@@ -32,13 +32,13 @@ public class StandDayEntity {
     private Long id;
 
     @JoinColumn(name = "stand_id", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private StandEntity stand;
 
     @Column(nullable = false)
     private LocalDate date;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "stand_day_time_frames",
             joinColumns = @JoinColumn(name = "stand_day_id"),
@@ -47,6 +47,6 @@ public class StandDayEntity {
     private List<TimeFrameEntity> timeFrames;
 
     @JsonBackReference
-    @OneToMany(mappedBy = "standDay", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "standDay", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StandDayAttendee> attendees;
 }

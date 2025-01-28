@@ -26,8 +26,8 @@ public class TelegramService {
 
     public void sendStandNeedNotification(StandDayEntity standDay, TimeFrameEntity timeFrame) {
         var attendees = standDay.getAttendees().stream().filter(a -> a.getTimeFrame().equals(timeFrame)).toList();
-        if (attendees.size() >= 4) {
-            log.info("StandDay is full, no need to send notification");
+        if (attendees.size() != 3) {
+            log.info("StandDay {} attendees, no need to send notification", attendees.size());
             return;
         }
 

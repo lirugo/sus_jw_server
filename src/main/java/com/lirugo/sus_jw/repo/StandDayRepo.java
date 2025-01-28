@@ -12,4 +12,6 @@ public interface StandDayRepo extends JpaRepository<StandDayEntity, Long> {
     List<StandDayEntity> findAllWithinOneMonthRange(
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate);
+
+    List<StandDayEntity> findByDate(LocalDate date);
 }

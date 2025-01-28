@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -39,6 +40,17 @@ public class StandDayService {
         var endDate = currentDate.plusMonths(STAND_RANGE_MNTHS);
 
         return standDayRepo.findAllWithinOneMonthRange(startDate, endDate).stream().map(standDayMapper::map).toList();
+    }
+
+//    @Scheduled(cron = "${app.notification-cron}")
+    public void sendNotificationAboutTomorrow() {
+        var currentDate = LocalDate.now();
+        var tomorrow = currentDate.plusDays(1);
+        var standDays = standDayRepo.findByDate(tomorrow);
+
+        standDays.forEach(standDay ->
+                standDay.getTimeFrames()
+                        .forEach(timeFrame -> telegramService.sendStandNeedNotification(standDay, timeFrame)));
     }
 
     @Transactional

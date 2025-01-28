@@ -4,7 +4,8 @@ app:
     tg-bot-token: ${TG_BOT_TOKEN}
     tg-bot-username: "jw_helpers_bot"
     username-white-list: ANY # use tg ids for it
-  chat-id: -1001864515510
+  chat-id: -1001864515510 # RPDO -1001864515510 TEST -1002379185305
+  notification-cron: "0 0 10 * * *" # every day at 10:00
   message-template: | 
     Є потреба на стенд {0} | {1}
     {2}
