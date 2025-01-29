@@ -3,6 +3,7 @@ package com.lirugo.sus_jw.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lirugo.sus_jw.dto.UserDto;
+import com.lirugo.sus_jw.dto.response.AvatarResponse;
 import com.lirugo.sus_jw.entity.UserEntity;
 import com.lirugo.sus_jw.mapper.UserMapper;
 import com.lirugo.sus_jw.repo.UserRepo;
@@ -10,11 +11,12 @@ import jakarta.persistence.EntityNotFoundException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -78,17 +80,24 @@ public class UserService {
         return userDto;
     }
 
-    public byte[] getAvatar(Long id) {
+    public Optional<AvatarResponse> getAvatar(Long id) {
         var user = getById(id);
         var restTemplate = new RestTemplate();
-        try {
-            byte[] imageBytes = restTemplate.getForObject(user.getPhotoUrl(), byte[].class);
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.add(HttpHeaders.CONTENT_TYPE, "image/svg+xml");
-            return imageBytes;
+        try {
+            ResponseEntity<byte[]> response = restTemplate.getForEntity("https://cdn.pixabay.com/photo/2021/07/02/04/48/user-6380868_1280.png", byte[].class);
+
+            if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
+                String contentType = Optional.ofNullable(response.getHeaders().getContentType())
+                        .map(MediaType::toString)
+                        .orElse("application/octet-stream");
+
+                return Optional.of(new AvatarResponse(response.getBody(), contentType));
+            }
         } catch (Exception e) {
-            return new byte[]{};
+            log.error("Failed to fetch avatar: " + e.getMessage());
         }
+
+        return Optional.empty();
     }
 }

@@ -4,6 +4,9 @@ package com.lirugo.sus_jw.controller;
 import com.lirugo.sus_jw.dto.UserDto;
 import com.lirugo.sus_jw.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
@@ -32,16 +35,18 @@ public class UserController {
     }
 
     @GetMapping("/{id}/avatar")
-    public ResponseEntity<byte[]> getUserAvatar(@PathVariable Long id) {
-        byte[] avatar = userService.getAvatar(id);
+    public ResponseEntity<ByteArrayResource> getUserAvatar(@PathVariable Long id) {
+        return userService.getAvatar(id)
+                .map(avatarResponse -> {
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.parseMediaType(avatarResponse.getContentType()));
+                    headers.set(HttpHeaders.CONTENT_DISPOSITION, "inline");
 
-        if (avatar == null || avatar.length == 0) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok()
-                .header("Content-Type", "image/png+gif+svg+jpg+jpeg")
-                .body(avatar);
+                    return ResponseEntity.ok()
+                            .headers(headers)
+                            .body(new ByteArrayResource(avatarResponse.getImageBytes()));
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 }
