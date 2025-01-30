@@ -64,6 +64,11 @@ public class UserService {
                 .build()
         );
 
+        // Fields which can be updated
+        userEntity.setUsername(userDto.getUsername());
+        userEntity.setFirstName(userDto.getFirstName());
+        userEntity.setLastName(userDto.getLastName());
+
         userRepo.save(userEntity);
 
         return userMapper.map(userEntity);
@@ -85,7 +90,7 @@ public class UserService {
         var restTemplate = new RestTemplate();
 
         try {
-            ResponseEntity<byte[]> response = restTemplate.getForEntity("https://cdn.pixabay.com/photo/2021/07/02/04/48/user-6380868_1280.png", byte[].class);
+            ResponseEntity<byte[]> response = restTemplate.getForEntity(user.getPhotoUrl(), byte[].class);
 
             if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
                 String contentType = Optional.ofNullable(response.getHeaders().getContentType())

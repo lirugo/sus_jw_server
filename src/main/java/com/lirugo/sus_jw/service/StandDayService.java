@@ -42,7 +42,7 @@ public class StandDayService {
         return standDayRepo.findAllWithinOneMonthRange(startDate, endDate).stream().map(standDayMapper::map).toList();
     }
 
-//    @Scheduled(cron = "${app.notification-cron}")
+    @Scheduled(cron = "${app.notification-cron}")
     public void sendNotificationAboutTomorrow() {
         var currentDate = LocalDate.now();
         var tomorrow = currentDate.plusDays(1);
