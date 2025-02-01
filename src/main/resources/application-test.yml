@@ -1,8 +1,10 @@
 spring:
   flyway:
     url: jdbc:postgresql://localhost:5432/sus_jw_db
-#  jpa:
-#    show-sql: true
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
 
 app:
   chat-id: -1002379185305

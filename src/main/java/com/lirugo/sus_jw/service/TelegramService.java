@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class TelegramService {
 
-    private static final String FREE_PLACE = "Вільно";
+    private static final String FREE_PLACE = "";
     private final TelegramBot telegramBot;
 
     @Value("${app.chat-id}")

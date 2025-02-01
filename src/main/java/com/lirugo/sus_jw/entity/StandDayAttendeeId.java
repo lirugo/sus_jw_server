@@ -8,5 +8,4 @@ public record StandDayAttendeeId(
         Long standDayId,
         Long timeFrameId,
         Long userId
-) implements Serializable {
-}
+) implements Serializable {}
