@@ -61,6 +61,7 @@ public class UserService {
                 .firstName(userDto.getFirstName())
                 .lastName(userDto.getLastName())
                 .photoUrl(userDto.getPhotoUrl())
+                .displayName(userDto.getFirstName() + " " + userDto.getLastName())
                 .build()
         );
 

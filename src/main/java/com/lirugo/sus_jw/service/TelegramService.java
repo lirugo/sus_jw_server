@@ -35,10 +35,10 @@ public class TelegramService {
                 DAY_MONTH_FORMATTER.format(standDay.getDate()),
                 timeFrame.getFromTime() + "-" + timeFrame.getToTime(),
                 standDay.getStand().getName(),
-                attendees.size() > 0 ? attendees.get(0).getUser().getFullName() : FREE_PLACE,
-                attendees.size() > 1 ? attendees.get(1).getUser().getFullName() : FREE_PLACE,
-                attendees.size() > 2 ? attendees.get(2).getUser().getFullName() : FREE_PLACE,
-                attendees.size() > 3 ? attendees.get(3).getUser().getFullName() : FREE_PLACE
+                attendees.size() > 0 ? attendees.get(0).getUser().getDisplayName() : FREE_PLACE,
+                attendees.size() > 1 ? attendees.get(1).getUser().getDisplayName() : FREE_PLACE,
+                attendees.size() > 2 ? attendees.get(2).getUser().getDisplayName() : FREE_PLACE,
+                attendees.size() > 3 ? attendees.get(3).getUser().getDisplayName() : FREE_PLACE
         ));
     }
 }

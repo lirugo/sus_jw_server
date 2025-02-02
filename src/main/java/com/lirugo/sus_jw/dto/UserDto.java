@@ -23,4 +23,7 @@ public class UserDto {
 
     @JsonProperty("photo_url")
     private String photoUrl;
+
+    @JsonProperty("display_name")
+    private String displayName;
 }
